@@ -1,4 +1,4 @@
-
+ 
 
 -- Creación de tablas
 CREATE TABLE Categorias (
@@ -25,7 +25,8 @@ CREATE TABLE Proveedores (
 CREATE TABLE Productos_Proveedores (
     producto_id INT,
     proveedor_id INT,
-    precio_compra DECIMAL(10,2),
+    precio_compra DECIMAL(10,2),    
+    stock INT NOT NULL,
     PRIMARY KEY (producto_id, proveedor_id),
     FOREIGN KEY (producto_id) REFERENCES Productos(producto_id),
     FOREIGN KEY (proveedor_id) REFERENCES Proveedores(proveedor_id)
@@ -51,6 +52,7 @@ CREATE TABLE Clientes (
     tarjeta_fidelidad BOOLEAN DEFAULT FALSE,
     puntos INT DEFAULT 0
 );
+
 CREATE TABLE Ventas (
     venta_id INT PRIMARY KEY AUTO_INCREMENT,
     fecha DATE NOT NULL,
@@ -58,15 +60,16 @@ CREATE TABLE Ventas (
     empleado_id INT,
     total DECIMAL(10,2) NOT NULL,
     forma_pago VARCHAR(50),
-    descuento DECIMAL(10,2) DEFAULT 0
+    descuento DECIMAL(10,2) DEFAULT 0,
+    FOREIGN KEY (empleado_id) REFERENCES Empleados(empleado_id)
 );
 
 CREATE TABLE Detalles_Venta (
+    detalle_venta_id INT PRIMARY KEY AUTO_INCREMENT,
     venta_id INT,
     producto_id INT,
     cantidad INT,
     precio_unitario DECIMAL(10,2),
-    PRIMARY KEY (venta_id, producto_id),
     FOREIGN KEY (venta_id) REFERENCES Ventas(venta_id),
     FOREIGN KEY (producto_id) REFERENCES Productos(producto_id)
 );
@@ -87,13 +90,43 @@ CREATE TABLE Promociones (
     FOREIGN KEY (producto_id) REFERENCES Productos(producto_id)
 );
 
+CREATE TABLE Historial_Precios (
+    historial_precio_id INT PRIMARY KEY AUTO_INCREMENT,
+    producto_id INT NOT NULL,
+    precio DECIMAL(10,2) NOT NULL,
+    fecha_inicio DATE NOT NULL,
+    fecha_fin DATE,
+    FOREIGN KEY (producto_id) REFERENCES Productos(producto_id),
+    INDEX idx_producto_fecha_inicio (producto_id, fecha_inicio)
+);
+
+
+CREATE TABLE Puntos_Fidelidad (
+    puntos_fidelidad_id INT PRIMARY KEY AUTO_INCREMENT,
+    cliente_id INT NOT NULL,
+    venta_id INT NOT NULL,
+    puntos_ganados INT NOT NULL,
+    fecha_acumulacion DATE NOT NULL,
+    saldo_actual INT,
+    FOREIGN KEY (cliente_id) REFERENCES Clientes(cliente_id),
+    FOREIGN KEY (venta_id) REFERENCES Ventas(venta_id),
+    INDEX idx_cliente_fecha (cliente_id, fecha_acumulacion)
+);
 
 
 
--- ... (continuar con las demás tablas: Empleados, Clientes, Ventas, Detalles_Venta, Promociones)
 
--- Creación de índices (ejemplo)
-CREATE INDEX idx_productos_nombre ON Productos(nombre);
-CREATE INDEX idx_ventas_fecha ON Ventas(fecha);
+
+CREATE INDEX idx_fecha_cliente ON Ventas (fecha, cliente_id);
+CREATE INDEX idx_empleado_fecha ON Ventas (empleado_id, fecha);
+CREATE INDEX idx_venta_producto ON Detalles_Venta (venta_id, producto_id);
+CREATE INDEX idx_fecha_inicio_fin ON Promociones (fecha_inicio, fecha_fin);
+CREATE INDEX idx_tipo_activo ON Promociones (tipo, activo);
+CREATE INDEX idx_proveedor_producto ON Productos_Proveedores (proveedor_id, producto_id);
+CREATE INDEX idx_apellido_nombre ON Clientes (apellidos, nombre);
+CREATE INDEX idx_tarjeta_fidelidad ON Clientes (tarjeta_fidelidad);
+CREATE INDEX idx_departamento_puesto ON Empleados (departamento, puesto);
+
+
 
 commit;
