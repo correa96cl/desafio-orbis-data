@@ -27,6 +27,7 @@ public class TaskController {
 
     @GetMapping
     public ResponseEntity<List<Task>> getAllTasks() {
+        System.out.println(taskManager.getAllTasks().size());
         return ResponseEntity.ok(taskManager.getAllTasks());
     }
 

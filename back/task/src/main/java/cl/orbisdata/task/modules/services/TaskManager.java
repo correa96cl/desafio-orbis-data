@@ -24,9 +24,11 @@ public class TaskManager {
     }
 
     public Task crearTask(String title) {
-      var task = Task.builder().id(UUID.randomUUID()).title(title).completed(false).build();
-        
-        return task;
+        Task task = new Task();
+        task.setId(UUID.randomUUID());
+        task.setTitle(title);
+        tasks.add(task);
+        return task;        
     }
 
     public void eliminarTask(UUID id) {
