@@ -23,7 +23,7 @@ public class SecurityConfig {
         .authorizeHttpRequests(auth -> {
           auth.requestMatchers("/tasks/**").permitAll()
               .requestMatchers(PERMIT_ALL_LIST).permitAll();
-          auth.anyRequest().authenticated();
+          auth.anyRequest().permitAll();
         });
     return http.build();
   }

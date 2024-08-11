@@ -2,9 +2,13 @@
 <div>
   <h2>Tareas Completadas</h2>
 
+  <button type="button" class="btn btn-primary btn-rounded" mdbRipple (click)="addTask()">
+    Nuevo
+  </button>
+
   <ul *ngIf="completedTasks.length > 0">
     <li *ngFor="let task of completedTasks">{{ task.title }}
-      <button (click)="deleteTask(task)" [hidden]="!task.completed">Delete</button>
+      <button (click)="deleteTask(task)" mdbRipple [hidden]="!task.completed">Delete</button>
 
     </li>
   </ul>
@@ -13,7 +17,7 @@
   <h2>Tareas Incompletas</h2>
   <ul *ngIf="incompletedTasks.length > 0">
     <li *ngFor="let task of incompletedTasks">{{ task.title }}
-      <button (click)="completeTask(task)"
+      <button (click)="completeTask(task)" mdbRipple
       [hidden]="task.completed">Complete</button>
 
     </li>

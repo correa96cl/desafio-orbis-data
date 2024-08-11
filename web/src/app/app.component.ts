@@ -11,7 +11,7 @@ import { NgFor, NgIf } from '@angular/common';
   templateUrl: './app.component.html',
   styleUrl: './app.component.css'
 })
-export class AppComponent {
+export class AppComponent implements OnInit {
   tasks: Task[] = [];
   completedTasks: Task[] = [];
   incompletedTasks: Task[] = [];
@@ -19,22 +19,49 @@ export class AppComponent {
 
 
   constructor(private taskService: TaskService) {
-    this.taskService.getTasks().subscribe(tasks => {
+    this.completedTasks = [];
+    this.incompletedTasks= [];
+    
+  }
+  ngOnInit(): void {
+    console.log("ngOnInit")
+    this.listTasks();
+  }
+
+  listTasks() {
+    console.log("listTasks")
+     this.taskService.getTasks().subscribe(tasks => {
       this.tasks = tasks;
       this.completedTasks = tasks.filter(task => task.completed);
+      console.log(this.completedTasks.length);
       this.incompletedTasks = tasks.filter(task => !task.completed);
+      console.log(this.incompletedTasks.length);
+
+
     });
   }
 
   completeTask(task: Task): void {
-    this.taskService.completeTask(task.id);
+    console.log(task.id)
+    this.taskService.completeTask(task.id).subscribe(
+      () => this.ngOnInit()
+    );
+
+
   }
 
-  deleteTask(task: Task): void {
-    this.taskService.deleteTask(task.id);
+   deleteTask(task: Task):void {
+    console.log(task.id)
+    this.taskService.deleteTask(task.id).subscribe(
+      () => this.ngOnInit()
+    );
+
+
   }
 
   addTask(): void{
-    this.taskService.addTask(this.task);
+    this.taskService.addTask(this.task).subscribe(
+      () => this.ngOnInit()
+    );
   }
 }

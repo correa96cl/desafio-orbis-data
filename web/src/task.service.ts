@@ -1,13 +1,18 @@
-import { Injectable } from '@angular/core';
+import { inject, Injectable } from '@angular/core';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
-import { catchError, Observable, throwError } from 'rxjs';
+import { catchError, Observable, Subject, throwError } from 'rxjs';
 import { Task } from './task';
 
 @Injectable({ providedIn: 'root' })
 export class TaskService {
   private apiUrl = 'http://localhost:8080/tasks';
+  http = inject(HttpClient);
+  public   customerAdded: Subject<boolean>;
 
-  constructor(private http: HttpClient) {}
+
+  constructor() {
+    this.customerAdded = new Subject<boolean>();
+  }
 
   getTasks(): Observable<Task[]> {
     return this.http.get<Task[]>(this.apiUrl);
@@ -18,16 +23,11 @@ export class TaskService {
   }
 
   deleteTask(id: string): Observable<any> {
-    const url = `${this.apiUrl}/${id}`;
-    return this.http.delete(url).pipe(
-      catchError(this.handleError('deleteTask'))
-    ); // Use catchError with specific operation name
+    return this.http.delete<any>(`${this.apiUrl}/`+id);
   }
 
   completeTask(id: string): Observable<any> {
-    return this.http.put(`${this.apiUrl}/${id}`,{ completed: true }).pipe(
-      catchError(this.handleError('completeTask'))
-    );
+    return this.http.put<any>(`${this.apiUrl}/${id}/complete`, { });
 
   }
 

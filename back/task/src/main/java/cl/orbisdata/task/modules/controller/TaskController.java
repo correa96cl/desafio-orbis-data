@@ -20,9 +20,10 @@ import cl.orbisdata.task.modules.dto.Task;
 import cl.orbisdata.task.modules.services.TaskManager;
 import jakarta.validation.Valid;
 
-@CrossOrigin(origins = "http://localhost:4200") 
+
 @RestController
 @RequestMapping("/tasks")
+@CrossOrigin(origins = "*")
 public class TaskController {
     @Autowired
     private TaskManager taskManager;
