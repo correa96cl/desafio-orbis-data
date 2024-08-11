@@ -5,8 +5,10 @@
   <button type="button" class="btn btn-primary btn-rounded" mdbRipple (click)="newTask()">
     Nuevo
   </button>
-  <input type="text" [(ngModel)]="title" *ngIf="mostrarInputNewTask" placeholder="Nueva Tarea" (keyup.enter)="addTask()">
 
+  <input type="text" [(ngModel)]="title" *ngIf="mostrarInputNewTask" placeholder="Nueva Tarea" (keyup.enter)="addTask()">
+  <br>
+  <br>
   <ul *ngIf="completedTasks.length > 0">
     <li *ngFor="let task of completedTasks">{{ task.title }}
       <button (click)="deleteTask(task)" mdbRipple [hidden]="!task.completed">Delete</button>
