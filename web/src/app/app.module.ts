@@ -1,6 +1,7 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 
+
 import { AppComponent } from './app.component';
 
 import {provideHttpClient, withFetch } from '@angular/common/http';
@@ -11,7 +12,7 @@ import {provideHttpClient, withFetch } from '@angular/common/http';
     AppComponent
   ],
   imports: [
-    BrowserModule,
+    BrowserModule
   ],
   providers: [
     provideHttpClient(withFetch())

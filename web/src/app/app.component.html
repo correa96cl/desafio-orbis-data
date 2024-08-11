@@ -2,9 +2,10 @@
 <div>
   <h2>Tareas Completadas</h2>
 
-  <button type="button" class="btn btn-primary btn-rounded" mdbRipple (click)="addTask()">
+  <button type="button" class="btn btn-primary btn-rounded" mdbRipple (click)="newTask()">
     Nuevo
   </button>
+  <input type="text" [(ngModel)]="title" *ngIf="mostrarInputNewTask" placeholder="Nueva Tarea" (keyup.enter)="addTask()">
 
   <ul *ngIf="completedTasks.length > 0">
     <li *ngFor="let task of completedTasks">{{ task.title }}

@@ -3,11 +3,13 @@ import { RouterOutlet } from '@angular/router';
 import { Task } from '../task';
 import { TaskService } from '../task.service';
 import { NgFor, NgIf } from '@angular/common';
+import { FormsModule } from '@angular/forms';
+
 
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [RouterOutlet, NgFor, NgIf],
+  imports: [RouterOutlet, NgFor, NgIf, FormsModule],
   templateUrl: './app.component.html',
   styleUrl: './app.component.css'
 })
@@ -16,6 +18,9 @@ export class AppComponent implements OnInit {
   completedTasks: Task[] = [];
   incompletedTasks: Task[] = [];
   task!: Task;
+  mostrarInputNewTask = false;
+  title = '';
+
 
 
   constructor(private taskService: TaskService) {
@@ -26,6 +31,7 @@ export class AppComponent implements OnInit {
   ngOnInit(): void {
     console.log("ngOnInit")
     this.listTasks();
+    this.title = '';
   }
 
   listTasks() {
@@ -59,7 +65,15 @@ export class AppComponent implements OnInit {
 
   }
 
+  newTask(){
+    this.task = new Task();
+    this.mostrarInputNewTask = true;
+  }
+
   addTask(): void{
+    console.log(`HOLA`+this.title)
+    this.task.title = this.title;
+  
     this.taskService.addTask(this.task).subscribe(
       () => this.ngOnInit()
     );
