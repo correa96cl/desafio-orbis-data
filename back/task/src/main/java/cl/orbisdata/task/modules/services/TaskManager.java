@@ -32,12 +32,14 @@ public class TaskManager {
     }
 
     public void eliminarTask(UUID id) {
+        System.out.println("Eliminando tarea con ID: " + id);
         if (getTaskById(id) != null) {
             tasks.removeIf(task -> task.getId().equals(id));
         }
     }
 
     public void completarTask(UUID id) {
+        System.out.println("Completando tarea con ID: " + id);
         getTaskById(id).setCompleted(true);
     }
 }

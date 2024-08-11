@@ -1,8 +1,10 @@
+
 <div>
   <h2>Tareas Completadas</h2>
+
   <ul *ngIf="completedTasks.length > 0">
     <li *ngFor="let task of completedTasks">{{ task.title }}
-      <app-delete-task [id]="id" (onDelete)="onDelete(task.id)"></app-delete-task>
+      <button (click)="deleteTask(task)" [hidden]="!task.completed">Delete</button>
 
     </li>
   </ul>
@@ -11,7 +13,9 @@
   <h2>Tareas Incompletas</h2>
   <ul *ngIf="incompletedTasks.length > 0">
     <li *ngFor="let task of incompletedTasks">{{ task.title }}
-      <app-delete-task [id]="id" (onDelete)="onDelete(task.id)"></app-delete-task>
+      <button (click)="completeTask(task)"
+      [hidden]="task.completed">Complete</button>
+
     </li>
   </ul>
   <p *ngIf="incompletedTasks.length === 0">No existen tareas incompletas.</p>
